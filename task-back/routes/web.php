@@ -22,6 +22,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user', function () {
-    return view('users');
-});
+// Route::get('/user', function () {
+//     return view('users');
+// });
+Route::get('/users',[UserController::class,'index']);

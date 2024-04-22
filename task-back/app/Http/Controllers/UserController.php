@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Models\Group;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -15,8 +16,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user1 = DB::insert('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', ['John Doe', 'john@example.com', 'password123']);
+        $users = DB::select('SELECT * FROM users');
+        dd($users);
         $users = User::all();
-        return view('users.index', compact('users'));
+        return view('index', compact('users'));
     }
 
     /**
@@ -24,6 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
+
         return view('users.create');
     }
 

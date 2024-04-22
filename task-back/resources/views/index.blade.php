@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
     <div class="container mx-auto">
         <h1 class="text-2xl font-bold my-4">Users</h1>
         <!-- Display table listing all users -->
@@ -42,4 +39,3 @@
             </tbody>
         </table>
     </div>
-@endsection
