@@ -25,9 +25,10 @@
       }
     },
     methods: {
-      saveGroup() {
-        //Save Group logic
-        this.$router.push('/groups')
+    async saveGroup() {
+      const newGroup = { label: this.label };
+      await this.$axios.$post('/groups', newGroup);
+      this.$router.push('/groups');
       },
     },
   }

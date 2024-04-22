@@ -22,7 +22,9 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'username' => 'required|string|max:255',
+            'mobile' => 'required|digits:10',
+            'groups' => 'required|array',
         ];
     }
 }

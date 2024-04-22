@@ -23,6 +23,10 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
+    protected $routeMiddleware = [
+        'check.groups.exist' => \App\Http\Middleware\CheckGroupsExist::class,
+    ];
+
     /**
      * The application's route middleware groups.
      *

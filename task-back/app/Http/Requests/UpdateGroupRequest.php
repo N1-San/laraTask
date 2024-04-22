@@ -22,7 +22,7 @@ class UpdateGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'label' => 'sometimes|required|string|max:255',
         ];
     }
 }

@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateGroupRequest;
 use App\Models\Group;
 use Illuminate\Support\Facades\DB;
 
+use App\Http\Requests\GroupRequest;
+
 class GroupController extends Controller
 {
     /**
@@ -16,7 +18,8 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
-        return response()->json($groups);
+        
+        return view('groups.index', compact('groups'));
     }
 
     /**
@@ -24,7 +27,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        return view('groups.create');
     }
 
     /**
@@ -32,16 +35,16 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validated();
-        $group = Group::create($validatedData);
+        //validate
+        Group::create($request->all());
 
-        return response()->json($group, 201);
+        return redirect()->route('groups.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, Group $group)
     {
         return response()->json($group);
     }
@@ -51,35 +54,27 @@ class GroupController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('groups.edit', compact('group'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, Group $group)
     {
-        $validatedData = $request->validated();
-        $group->update($validatedData);
+        //validate
+        $group->update($request->validated());
 
-        return response()->json($group);
+        return redirect()->route('groups.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, Group $group)
     {
-        $hasUsers = DB::table('group_user')
-            ->where('group_id', $group->id)
-            ->exists();
-
-        if ($hasUsers) {
-            // Handle the error or implement a cascade delete
-            return response()->json(['error' => 'Cannot delete group with associated users'], 409);
-        }
-
         $group->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('groups.index');
     }
 }

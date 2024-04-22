@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -44,8 +48,5 @@ class User extends Authenticatable
     ];
 }
 
-public function groups()
-{
-    return $this->belongsToMany(Group::class);
-}
+
 

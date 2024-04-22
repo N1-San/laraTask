@@ -24,25 +24,12 @@
       Group,
     },
     data() {
-      return {
-        groups: [
-          {
-            id: 1,
-            label: 'Administrators',
-            createdAt: '2022-05-01',
-          },
-          {
-            id: 2,
-            label: 'Editors',
-            createdAt: '2023-02-15',
-          },
-          {
-            id: 3,
-            label: 'User',
-            createdAt: '2024-03-16'
-          }
-        ],
-      }
-    },
-  }
+    return {
+      groups: [],
+    }
+  },
+  async fetch() {
+    this.groups = await this.$axios.$get('/groups');
+  },
+}
   </script>

@@ -15,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('groups')->get();
-        return response()->json($users);
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -24,19 +24,18 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
     {
         $validatedData = $request->validated();
-        $user = User::create($validatedData);
-        $user->groups()->attach($validatedData['groups']);
+        User::create($request->all());
 
-        return response()->json($user, 201);
+        return redirect()->route('users.index');
     }
 
     /**
@@ -44,36 +43,35 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user->load('groups');
-        return response()->json($user);
+    //     $user->load('groups');
+    //     return response()->json($user);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, User $user)
     {
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, User $user)
     {
-        $validatedData = $request->validated();
-        $user->update($validatedData);
-        $user->groups()->sync($validatedData['groups']);
+        $user->update($request->all());
 
-        return response()->json($user);
+        return redirect()->route('users.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
         $user->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('users.index');
     }
 }
