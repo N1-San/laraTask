@@ -39,6 +39,9 @@
       User,
       Group
     },
+    setup(){
+      
+    },
     data() {
     return {
       resources: [],
