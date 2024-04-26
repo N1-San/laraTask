@@ -4,16 +4,33 @@
     <form @submit.prevent="updateUser" class="space-y-4">
       <div>
         <label class="block mb-2 font-semibold" for="username">Username:</label>
-        <input id="username" v-model="username" type="text" class="w-full p-2 border border-gray-300 rounded-md"
-          required />
+        <input
+          id="username"
+          v-model="username"
+          type="text"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
       </div>
       <div>
         <label class="block mb-2 font-semibold" for="mobile">Mobile:</label>
-        <input id="mobile" v-model="mobile" type="tel" class="w-full p-2 border border-gray-300 rounded-md" required />
+        <input
+          id="mobile"
+          v-model="mobile"
+          type="tel"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
       </div>
       <div>
         <label class="block mb-2 font-semibold" for="groups">Groups:</label>
-        <select id="groups" v-model="groups" multiple class="w-full p-2 border border-gray-300 rounded-md" required>
+        <select
+          id="groups"
+          v-model="groups"
+          multiple
+          class="w-full p-2 border border-gray-300 rounded-md"
+          required
+        >
           <option v-for="group in availableGroups" :key="group" :value="group">{{ group }}</option>
         </select>
       </div>
@@ -26,33 +43,29 @@
 export default {
   data() {
     return {
-      user: null,
+      userId: this.$route.params.id,
       username: '',
       mobile: '',
       groups: [],
+      availableGroups: ['admin', 'editor', 'user'],
     }
   },
-  computed: {
-    availableGroups() {
-      return this.$store.state.groups.map(group => ({ label: group.label, value: group.id }));
-    },
-  },
-  async fetch() {
-    this.user = await this.$axios.$get(`/users/${this.$route.params.id}`);
-    this.username = this.user.username;
-    this.mobile = this.user.mobile;
-    this.groups = this.user.groups.map(group => ({ label: group.label, value: group.id }));
-    this.$store.commit('setGroups', await this.$axios.$get('/groups'));
+  mounted() {
+    this.fetchUserData()
   },
   methods: {
-    async updateUser() {
-      const updatedUser = {
-        username: this.username,
-        mobile: this.mobile,
-        groups: this.groups.map(group => group.value),
-      };
-      await this.$axios.$put(`/users/${this.$route.params.id}`, updatedUser);
-      this.$router.push('/users');
+    fetchUserData() {
+      const user = this.$parent.users.find(user => user.id === parseInt(this.userId))
+
+      if (user) {
+        this.username = user.username
+        this.mobile = user.mobile
+        this.groups = user.groups
+      }
+    },
+    updateUser() {
+      // implement update logic
+      this.$router.push('/users')
     },
   },
 }

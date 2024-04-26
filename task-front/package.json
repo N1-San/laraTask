@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "axios": "^1.6.8",
+    "cors": "^2.8.5",
     "nuxt": "^3.11.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"

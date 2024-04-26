@@ -18,23 +18,14 @@ export default {
       type: Number,
       required: true,
     },
-  },
-  computed: {
-    label() {
-      return this.group.label;
+    label: {
+      type: String,
+      required: true,
     },
-    createdAt() {
-      return this.group.created_at;
+    createdAt: {
+      type: String,
+      required: true,
     },
-  },
-  methods: {
-    async deleteResource() {
-      await this.$axios.$delete(`/${this.resourceType}/${this.id}`);
-      this.$emit('resourceDeleted');
-    },
-  },
-  async fetch() {
-    this.group = await this.$axios.$get(`/groups/${this.id}`);
   },
 }
 </script>

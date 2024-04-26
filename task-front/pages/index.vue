@@ -1,13 +1,14 @@
+<!-- <template>
+    <div>
+    
+    </div>
+</template> -->
 <template>
     <div>
-        <h1>Home</h1>
-        <h2>User the nav bar to navigate to your desired operation</h2>
+      <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-4">Welcome to LaraTasks</h1>
+        <p>Manage your users and groups with ease.</p>
+        <h2>Use the nav bar to navigate to your desired operation</h2>
+      </div>
     </div>
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped>
-</style>
+  </template>

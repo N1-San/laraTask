@@ -11,72 +11,49 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $user1 = DB::insert('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', ['John Doe', 'john@example.com', 'password123']);
-        $users = DB::select('SELECT * FROM users');
-        dd($users);
-        $users = User::all();
-        return view('index', compact('users'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-        return view('users.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Create a new user (POST)
     public function store(Request $request)
     {
-        $validatedData = $request->validated();
-        User::create($request->all());
+        $validatedData = $request->validate([
+            'username' => 'required|string|max:255',
+            'mobile' => 'required|string|max:255',
+            'groups' => 'required|string|max:255',
+        ]);
 
-        return redirect()->route('users.index');
+        $user = User::create($validatedData);
+
+        return response()->json($user, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Read all users (GET)
+    public function index()
     {
-    //     $user->load('groups');
-    //     return response()->json($user);
+        $users = User::all();
+
+        return response()->json($users);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id, User $user)
+    // Update a user (PUT)
+    public function update(Request $request, $id)
     {
-        return view('users.edit', compact('user'));
+        $validatedData = $request->validate([
+            'username' => 'required|string|max:255',
+            'mobile' => 'required|string|max:255',
+            'groups' => 'required|string|max:255',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update($validatedData);
+
+        return response()->json($user);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id, User $user)
+    // Delete a user (DELETE)
+    public function destroy($id)
     {
-        $user->update($request->all());
-
-        return redirect()->route('users.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
+        $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index');
+        return response()->json(null, 204);
     }
 }
