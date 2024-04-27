@@ -25,4 +25,13 @@ Route::get('/', function () {
 // Route::get('/user', function () {
 //     return view('users');
 // });
-Route::get('/users',[UserController::class,'index']);
+// Route::get('/users',[UserController::class,'index']);
+// Route::apiResource('users', UserController::class);
+// Route::apiResource('groups', GroupController::class);
+Route::post('/users', [UserController::class, 'UserController@store']);
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+Route::post('/users', [UserController::class, 'store']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+

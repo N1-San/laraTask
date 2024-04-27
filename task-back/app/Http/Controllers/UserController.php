@@ -16,12 +16,11 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'username' => 'required|string|max:255',
-            'mobile' => 'required|string|max:255',
+            'mobile' => 'required|string|max:20',
             'groups' => 'required|string|max:255',
         ]);
-
+    
         $user = User::create($validatedData);
-
         return response()->json($user, 201);
     }
 
@@ -56,4 +55,12 @@ class UserController extends Controller
 
         return response()->json(null, 204);
     }
+    public function show($id)
+{
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+    return response()->json($user);
+}
 }
