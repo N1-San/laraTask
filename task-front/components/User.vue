@@ -14,6 +14,7 @@
       <li v-for="user in filteredUsers" :key="user.id" class="bg-white shadow-md rounded-md p-4 mb-4">
         <div class="flex justify-between items-center">
           <div>
+            <p class="text-lg font-semibold">ID: {{ user.id }}</p>
             <h3 class="text-lg font-semibold">{{ user.username }}</h3>
             <p class="text-sm text-gray-600">Mobile: {{ user.mobile }}</p>
             <p class="text-sm text-gray-600">Groups: {{ user.groups }}</p>
@@ -181,7 +182,7 @@ export default {
     },
     async deleteUser(userId) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/users/delete/${userId}`);
+        await axios.delete(`http://127.0.0.1:8000/api/users/${userId}`);
         this.fetchUsers()
       } catch (error) {
         console.error(error)
