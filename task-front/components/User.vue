@@ -5,11 +5,10 @@
     <ul>
       <li v-for="user in users" :key="user.id">
         {{ user.username }} - {{ user.mobile }} - {{ user.groups }} - {{ user.createdAt }}
-        <button @click="editUser(user)">Edit</button>
+        <button @click="showEditModal(user)">Edit</button>
         <button @click="deleteUser(user.id)">Delete</button>
       </li>
     </ul>
-
     <!-- Add User Modal -->
     <div v-if="showAddUserModal" class="modal">
       <div class="modal-content">
@@ -23,19 +22,19 @@
         </form>
       </div>
     </div>
-
-    <!-- <div class="flex justify-between items-center p-4 bg-gray-100 rounded-md">
-      <div v-for="u in users">
-        <h3 class="text-lg font-semibold">{{ u.username }}</h3>
-        <p class="text-sm text-gray-600">Mobile: {{ u.mobile }}</p>
-        <p class="text-sm text-gray-600">Groups: {{ u.groups }}</p>
-        <p class="text-sm text-gray-600">Created at: {{ u.created_at }}</p>
+    <!-- Edit User Modal -->
+    <div v-if="showEditModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeEditModal">&times;</span>
+        <h2>Edit User</h2>
+        <form @submit.prevent="updateUser">
+          <input v-model="editedUser.username" placeholder="Username" />
+          <input v-model="editedUser.mobile" placeholder="Mobile" />
+          <input v-model="editedUser.groups" placeholder="Groups" />
+          <button type="submit">Update User</button>
+        </form>
       </div>
-      <div class="flex space-x-2">
-        <NuxtLink :to="`/users/${id}`" class="px-3 py-1 bg-blue-500 text-white rounded-md">Edit</NuxtLink>
-        <button class="px-3 py-1 bg-red-500 text-white rounded-md">Delete</button>
-      </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -53,7 +52,9 @@ export default {
         username: '',
         mobile: '',
         groups: ''
-      }
+      },
+      showEditModal: false,
+      editedUser: null
     }
   },
   mounted() {
@@ -69,13 +70,33 @@ export default {
         console.error(error)
       }
     },
+    showEditModal(user) {
+      console.log('showEditModal called with:', user);
+      if (user) {
+        this.editedUser = { ...user }
+        this.showEditModal = true
+      }
+    },
+    closeEditModal() {
+      this.showEditModal = false
+      this.editedUser = {}
+    },
+    async updateUser() {
+      try {
+        await axios.put(`http://127.0.0.1:8000/api/users/${this.editedUser.id}`, this.editedUser)
+        this.closeEditModal()
+        this.fetchUsers()
+      } catch (error) {
+        console.error(error)
+      }
+    },
     editUser(user) {
       // add edit user functionality
       console.log('Edit user:', user)
     },
     async deleteUser(userId) {
       try {
-        await axios.delete(`127.0.0.1:8000/api/users/${userId}`)
+        await axios.delete(`http://127.0.0.1:8000/api/users/delete/${userId}`);
         this.fetchUsers()
       } catch (error) {
         console.error(error)
@@ -83,7 +104,7 @@ export default {
     },
     async addUser() {
       try {
-        await axios.post('http://127.0.0.1:8000/api/users', this.newUser)
+        await axios.post('http://127.0.0.1:8000/api/usersAdd', this.newUser)
         this.newUser = {
           username: '',
           mobile: '',
@@ -98,29 +119,3 @@ export default {
   }
 }
 </script>
-<!-- <script>
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
-    mobile: {
-      type: String,
-      required: true,
-    },
-    groups: {
-      type: Array,
-      required: true,
-    },
-    createdAt: {
-      type: String,
-      required: true,
-    },
-  },
-}
-</script> -->

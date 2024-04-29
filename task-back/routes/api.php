@@ -20,10 +20,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::apiResource('users', UserController::class);
 Route::apiResource('groups', GroupController::class);
-Route::post('/users', [UserController::class, 'store']);
-Route::get('/users', [UserController::class, 'index']);
+Route::post('/usersAdd', [UserController::class, 'store']);
+Route::get('/usersView', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::delete('/groups/delete/{id}', [UserController::class, 'destroy']);
+Route::post('/groupsAdd', [UserController::class, 'store']);
+Route::get('/groupsView', [UserController::class, 'index']);
+Route::get('/groups/{id}', [UserController::class, 'show']);
+Route::post('/groups', [UserController::class, 'store']);
+Route::put('/groups/{id}', [UserController::class, 'update']);
+Route::delete('/groups/delete/{id}', [UserController::class, 'destroy']);
 

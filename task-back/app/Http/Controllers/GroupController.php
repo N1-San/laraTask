@@ -18,9 +18,8 @@ class GroupController extends Controller
         $validatedData = $request->validate([
             'label' => 'required|string|max:255',
         ]);
-
+    
         $group = Group::create($validatedData);
-
         return response()->json($group, 201);
     }
 
