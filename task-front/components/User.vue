@@ -164,7 +164,7 @@ export default {
     },
     closeEditModal() {
       this.showEditModal = false
-      this.editedUser = {}
+      this.editedUser = null
     },
     async updateUser() {
       try {
