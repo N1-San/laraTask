@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
-    // public function groups()
-    // {
-    //     return $this->belongsToMany(Group::class);
-    // }
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
     protected $fillable = ['username', 'mobile', 'groups'];
 
 }
